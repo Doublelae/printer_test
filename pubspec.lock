@@ -365,7 +365,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: a5990e94c02a13ed6c726aefc66f08302c66e8b9
+      resolved-ref: "5d8b94ddde1874a4db99556df1abb89ff19989c7"
       url: "https://github.com/Doublelae/za_blue_printer_package.git"
     source: git
     version: "0.0.1"
