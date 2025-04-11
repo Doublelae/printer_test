@@ -45,8 +45,7 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Blue Print Pos'),
         ),
-        body:
-         SafeArea(
+        body: SafeArea(
           child: _isLoading && _blueDevices.isEmpty
               ? const Center(
                   child: CircularProgressIndicator(
@@ -58,7 +57,6 @@ class _MyAppState extends State<MyApp> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                              
                           Column(
                             children: List<Widget>.generate(_blueDevices.length, (int index) {
                               return Row(
@@ -76,7 +74,9 @@ class _MyAppState extends State<MyApp> {
                                             Text(
                                               _blueDevices[index].name,
                                               style: TextStyle(
-                                                color: _selectedDevice?.address == _blueDevices[index].address ? Colors.blue : Colors.black,
+                                                color: _selectedDevice?.address == _blueDevices[index].address
+                                                    ? Colors.blue
+                                                    : Colors.black,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -84,8 +84,9 @@ class _MyAppState extends State<MyApp> {
                                             Text(
                                               _blueDevices[index].address,
                                               style: TextStyle(
-                                                color:
-                                                    _selectedDevice?.address == _blueDevices[index].address ? Colors.blueGrey : Colors.grey,
+                                                color: _selectedDevice?.address == _blueDevices[index].address
+                                                    ? Colors.blueGrey
+                                                    : Colors.grey,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -135,7 +136,7 @@ class _MyAppState extends State<MyApp> {
                         ],
                       ),
                     )
-                  :  Center(
+                  : Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
@@ -148,26 +149,26 @@ class _MyAppState extends State<MyApp> {
                             style: TextStyle(fontSize: 14, color: Colors.grey),
                           ),
                           TextButton(
-                                      onPressed: _onPrintReceipt,
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                          (Set<MaterialState> states) {
-                                            if (states.contains(MaterialState.pressed)) {
-                                              return Theme.of(context).colorScheme.primary.withOpacity(0.5);
-                                            }
-                                            return Theme.of(context).primaryColor;
-                                          },
-                                        ),
-                                      ),
-                                      child: Container(
-                                        color: _selectedDevice == null ? Colors.grey : Colors.blue,
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: const Text(
-                                          'Test Print',
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ),
-                                    )
+                            onPressed: _onPrintReceipt,
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                                  if (states.contains(MaterialState.pressed)) {
+                                    return Theme.of(context).colorScheme.primary.withOpacity(0.5);
+                                  }
+                                  return Theme.of(context).primaryColor;
+                                },
+                              ),
+                            ),
+                            child: Container(
+                              color: _selectedDevice == null ? Colors.grey : Colors.blue,
+                              padding: const EdgeInsets.all(8.0),
+                              child: const Text(
+                                'Test Print',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     ),
@@ -224,7 +225,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _onPrintReceipt() async {
-    
     /// Example for Print Image
     final ByteData logoBytes = await rootBundle.load(
       'assets/logo.jpg',
@@ -236,25 +236,29 @@ class _MyAppState extends State<MyApp> {
     /// Example for Print Text
     final ReceiptSectionText receiptText = ReceiptSectionText();
 
-    receiptText.addText(text: 'မြန်မာလို', is80: false, alignment: ReceiptAlignment.center, size: ReceiptTextSize.large);
-
+    receiptText.addText(
+        text: 'မြန်မာလို', is80: false, alignment: ReceiptAlignment.center, size: ReceiptTextSize.large);
+    receiptText.addText(
+        text: 'မြန်မာလို', is80: false, alignment: ReceiptAlignment.center, size: ReceiptTextSize.large);
     receiptText.addText(text: 'သစ်ရွက်', is80: false, alignment: ReceiptAlignment.center, size: ReceiptTextSize.large);
     receiptText.addImage(base);
-    receiptText.addTableHeader(firstColHeader: "firstColHeader", secondColHeader: "secondColHeader", thirdColHeader: "thirdColHeader", fourthColHeader: "fourthColHeader");
-receiptText.add1Col1CellTableRow(value: "value", totalPrice: "totalPrice");
-receiptText.add2Col1CellTableRow(firstValue: "firstValue", secondValue: "secondValue", totalPrice: "totalPrice");
-receiptText.addTitleCustomeText(text: "text", is80: false, alignment: ReceiptAlignment.center, size: ReceiptTextSize.doubleextralarge);
-  final info = NetworkInfo();
-  final wifiIP = await info.getWifiIP();
-  log("wifiIP ==> $wifiIP");
-  try{
-  final result =  await ZaBluePrinter().printReceiptTextA4A5Wireless(
-      receiptText,
-      isA4: true,     
-      host: wifiIP .toString()??'',byteLog: false
-    );
-    log("printer result ==> $result??");
-    }catch(e){
+    receiptText.addTableHeader(
+        firstColHeader: "firstColHeader",
+        secondColHeader: "secondColHeader",
+        thirdColHeader: "thirdColHeader",
+        fourthColHeader: "fourthColHeader");
+    receiptText.add1Col1CellTableRow(value: "value", totalPrice: "totalPrice");
+    receiptText.add2Col1CellTableRow(firstValue: "firstValue", secondValue: "secondValue", totalPrice: "totalPrice");
+    receiptText.addTitleCustomeText(
+        text: "text", is80: false, alignment: ReceiptAlignment.center, size: ReceiptTextSize.doubleextralarge);
+    final info = NetworkInfo();
+    final wifiIP = await info.getWifiIP();
+    log("wifiIP ==> $wifiIP");
+    try {
+      final result = await ZaBluePrinter()
+          .printReceiptTextA4A5Wireless(receiptText, isA4: true, host: wifiIP.toString() ?? '', byteLog: false);
+      log("printer result ==> $result??");
+    } catch (e) {
       log("printer error ===> $e");
     }
     // // receiptSecondText.addSpacer();
